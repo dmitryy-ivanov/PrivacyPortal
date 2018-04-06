@@ -1,0 +1,130 @@
+
+entity ServiceOverview {
+	id Long,
+    commType String,
+    environment String,
+    serviceAddress String,
+    parameters String
+}
+
+entity SystemOverview {
+	id Long,
+    systemName String,
+    requestModus String,
+    requestLevel String
+}
+
+entity BlacklistCallOfOrderTime {
+	id Long,
+    blacklistStart Instant,
+    blacklistEnd End
+}
+
+relationship ManyToOne {
+	BlacklistCallOfOrderTime{system} to SystemOverview,
+    BlacklistCallOfOrderTime{service} to ServiceOverview
+}
+
+entity DetailedDataResponse {
+	id Long,
+    extId Integer,
+    transactionKey String,
+    systemKey String,
+    attribute String,
+    value String,
+    idRef Integer,
+    objectType String,
+    totalResult String,
+    startIndex String,
+    itemsPerPage String
+}
+
+entity GetDataRequestSF {
+	id Long,
+    transactionKey String,
+    targetDatetime Instant,
+    firstName String,
+    lastName String,
+    dateOfBirth Instant,
+    placeOfBirth String,
+    email String,
+    street String,
+    houseNumber String,
+    postCode String,
+    city String,
+    country String,
+    additional String,
+    userId String,
+    systemKey String,
+    VIN String,
+    startDate Instant,
+    endDate Instant,
+    objectType String,
+    languageCode String,
+    dataController String,
+    dataProcessor String,
+    requestType String
+}
+
+entity JobStatus {
+	id Long,
+    transactionKey String,
+    status String,
+    jobBlacklisted Instant,
+    blacklistEnd Instant,
+    jobPrepared Instant,
+    jobStarted Instant,
+    resultOverview Instant,
+    resultDetails Instant,
+    errMsg String,
+    readyForArchive Boolean,
+    requestType String,
+    objectType String
+}
+
+relationship ManyToOne {
+	JobStatus{systemOverview} to SystemOverview
+}
+
+entity OwerviewDataResponse {
+	id Long,
+    transactionKey String,
+    systemKey String,
+    firstName String,
+    lastName String,
+    dateOfBirth Instant,
+    placeOfBirth String,
+    email String,
+    street String,
+    houseNumber String,
+    postCode String,
+    city String,
+    country String,
+    additional String,
+    objectType String,
+    isAvailable Boolean,
+    objectId String
+}
+
+entity RequestSchedule {
+	id Long,
+    callOfOrderTime String
+}
+
+relationship ManyToOne {
+	RequestSchedule{serviceOverview} to ServiceOverview,
+    RequestSchedule{systemOverview} to SystemOverview
+}
+
+// Set pagination options
+//paginate JobHistory, Employee with infinite-scroll
+//paginate Job with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+//service all with serviceImpl except Employee, Job
+service all with serviceImpl// except Employee, Job
+
+// Set an angular suffix
+angularSuffix * with mySuffix
